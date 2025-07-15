@@ -97,7 +97,8 @@ parameters:
     default: ""
   kms:
     description: Provide KMS key reference
-    type: env_var_name
+    type: string
+    default: ""
   oci:
     description: Enable OCI store
     type: boolean
@@ -232,8 +233,8 @@ parameters:
     default: ""
   scribe-client-secret:
     description: Scribe Client Token
-    type: env_var_name
-    default: SCRIBE_API_KEY
+    type: string
+    default: ""
   scribe-disable:
     description: Disable scribe client
     type: boolean
@@ -262,6 +263,8 @@ steps:
   - run:
       name: Collect, Create and Store evidence for artifacts (SBOMs,SLSA provenance) or any third-party tools.
       command: |
+        ls -altr
+        pwd
         valint bom << parameters.target >> <<# parameters.attach-regex >>--attach-regex=<< parameters.attach-regex >><</ parameters.attach-regex >> \
          <<# parameters.attest-config >>--attest.config=<< parameters.attest-config >><</ parameters.attest-config >> \
          <<# parameters.attest-default >>--attest.default=<< parameters.attest-default >><</ parameters.attest-default >> \
@@ -320,7 +323,7 @@ steps:
          <<# parameters.product-key >>--product-key=<< parameters.product-key >><</ parameters.product-key >> \
          <<# parameters.product-version >>--product-version=<< parameters.product-version >><</ parameters.product-version >> \
          <<# parameters.scribe-client-id >>--scribe.client-id=<< parameters.scribe-client-id >><</ parameters.scribe-client-id >> \
-         --scribe.client-secret=${<< parameters.scribe-client-secret >>} \
+         <<# parameters.scribe-client-secret >>--scribe.client-secret=<< parameters.scribe-client-secret >><</ parameters.scribe-client-secret >> \
          <<# parameters.scribe-disable >>--scribe.disable=<< parameters.scribe-disable >><</ parameters.scribe-disable >> \
          <<# parameters.scribe-enable >>--scribe.enable=<< parameters.scribe-enable >><</ parameters.scribe-enable >> \
          <<# parameters.scribe-url >>--scribe.url=<< parameters.scribe-url >><</ parameters.scribe-url >> \
