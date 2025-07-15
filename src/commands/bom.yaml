@@ -233,6 +233,7 @@ parameters:
   scribe-client-secret:
     description: Scribe Client Token
     type: env_var_name
+    default: SCRIBE_API_KEY
   scribe-disable:
     description: Disable scribe client
     type: boolean
